@@ -2,9 +2,8 @@ from typing import Dict, Callable, Any, Union
 from train_pipeline.components import TrainComponents
 from train_pipeline.components.ml_pipeline.pipeline import MlPipeline
 import mlflow
-from dynaconf import settings
+from train_pipeline.config import settings
 from datetime import datetime
-import hashlib
 
 class MlflowSklearnWriter(TrainComponents):
     """A class for writing models to MLflow.

@@ -3,7 +3,18 @@ from typing import Any
 
 
 class SequentialTrainer(TrainComponents):
-    """A composite class representing a sequence of machine learning components."""
+    """A composite class representing a sequence of machine learning components.
+    
+    SequentialTrainer is a composite class that allows chaining multiple machine learning components 
+    in a sequential manner for training purposes.
+
+    Args:
+        name (str): The name of the sequential trainer.
+
+    Attributes:
+        name (str): The name of the sequential trainer.
+        components (List[TrainComponents]): List to store the components in the sequence.
+    """
 
     def __init__(self, name: str):
         """Initializes the MLComposite.

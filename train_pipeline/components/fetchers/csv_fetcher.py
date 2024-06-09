@@ -3,7 +3,23 @@ import pandas as pd
 from typing import Dict
 
 class CsvFetcher(TrainComponents):
-    """Concrete implementation of BaseFetcher for fetching data from an local csv file."""
+    """Fetches data from local CSV files.
+
+    CsvFetcher is a concrete implementation of BaseFetcher specifically designed for retrieving 
+    data stored in CSV format from local files.
+
+    Attributes:
+        Inherits attributes from TrainComponents.
+
+    Methods:
+        execute(sources: Dict[str, str]) -> pd.DataFrame:
+            Fetches data from one or more CSV files specified in the 'sources' dictionary.
+
+    Example:
+        fetcher = CsvFetcher()
+        sources = {'train': 'train.csv', 'test': 'test.csv'}
+        train_data = fetcher.execute(sources)
+    """
     
     def execute(self, sources: Dict[str, str]) -> pd.DataFrame:
         """Fetches data from a CSV file.

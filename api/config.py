@@ -1,11 +1,9 @@
-
 from dynaconf import Dynaconf
 
 settings = Dynaconf(
     environments=True,
     envvar_prefix="DYNACONF",
-    settings_files=['train_pipeline/settings.yaml', 'train_pipeline/.secrets.yaml'],
+    settings_files=['api/settings.yaml', 'api/.secrets.yaml'],
 )
-
 # `envvar_prefix` = export envvars with `export DYNACONF_FOO=bar`.
 # `settings_files` = Load these files in the order.
