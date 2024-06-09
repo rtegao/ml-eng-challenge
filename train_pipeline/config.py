@@ -2,8 +2,9 @@
 from dynaconf import Dynaconf
 
 settings = Dynaconf(
+    environments=True,
     envvar_prefix="DYNACONF",
-    settings_files=['settings.yaml', '.secrets.toml'],
+    settings_files=['train_pipeline/settings.yaml', 'train_pipeline/.secrets.yaml'],
 )
 
 # `envvar_prefix` = export envvars with `export DYNACONF_FOO=bar`.
