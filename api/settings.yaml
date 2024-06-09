@@ -1,0 +1,7 @@
+default:
+  MLFLOW_URI: "http://localhost:5000/"
+  AVAILABLE_MODELS: ["property_price"]
+  API_TITLE: "ML Model"
+  API_VERSION: "1.0.0"
+  API_DESCRIPTION: "ML Model Inference"
+  SWAGGER_UI: "/openapi.json"
