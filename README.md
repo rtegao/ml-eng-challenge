@@ -61,13 +61,19 @@ curl  -X POST \
   "values": ["departamento",	"vitacura",	140.0,	170.0,	4.0,	4.0,	-33.40123,	-70.58056]
 }'
 ```
+That is a bottleneck in this solution, as the MlFlow is running in a container totally separated from the train_pipeline and from the fastapi. A network bridge was created to connect all the containers, and a hardcoded IP address was used to create the MlFlow container.
+
+If any problem happens with the containers' communication, just run the following command:
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <mlflow-container-id>
+Get the IP address and replace it in the docker-compose.yaml and in the settings.yaml.
 
 # Assumptions
 Unit tests and a CI/CD pipeline were not requested for this challenge, so they are not included here.
 There was an error in the provided notebook where the target was used as a training feature. This problem was corrected in the `train_pipeline`.
 No grid search technique was used. It is assumed that the provided parameters are the most suitable ones.
 
-Improvements
+# Improvements
 - Tests and CI/CD pipelines are always necessary. Creating the necessary tests and setting up a GitHub Actions pipeline would be a valuable addition.
 - Some code in the entry point of the `train_pipeline` could be injected by an orchestration tool, such as the model parameters.
 - With the model parameters provided via an orchestration tool, a grid search could be performed to find the most suitable model using new training and test data.
+- Stop usind hardcoded IP for the MlFlow container, setup a DNS. 
