@@ -4,6 +4,7 @@ from components.ml_pipeline.pipeline import MlPipeline
 import mlflow
 from config import settings
 from datetime import datetime
+from logging import Logger
 
 class MlflowSklearnWriter(TrainComponents):
     """A class for writing models to MLflow.
@@ -14,14 +15,22 @@ class MlflowSklearnWriter(TrainComponents):
         BaseWriter: The base class for writers.
 
     """
-    def __init__(self, parameters: Dict[str, Union[int, float, str]], experiment_name) -> None:
+    def __init__(self, parameters: Dict[str, Union[int, float, str]], experiment_name, logger: Logger) -> None:
         self.parameters = parameters
+        self.logger = logger
         mlflow.set_tracking_uri(settings.MLFLOW_URI)
         if not mlflow.get_experiment_by_name(experiment_name):
             mlflow.create_experiment(name=experiment_name)
+            self.logger.info(f"Experiment not found, creating a new experiment")
         mlflow.set_experiment(experiment_name)
 
-    def _generate_run_id(self):
+    def _generate_run_id(self) -> str:
+        """
+        Generates a unique identifier for a run based on the current date and time.
+
+        Returns:
+            str: A unique identifier for the run, formatted as "%Y%m%d%H%M%S".
+        """
         today_date = datetime.now()
         return today_date.strftime("%Y%m%d%H%M%S")
 

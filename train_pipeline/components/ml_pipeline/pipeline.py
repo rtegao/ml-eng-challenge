@@ -2,7 +2,7 @@ from components import TrainComponents
 from sklearn.pipeline import Pipeline
 from typing import List, Tuple, Sequence, Dict, Union, Callable
 import pandas as pd
-
+from logging import Logger
 
 class MlPipeline(TrainComponents):
     """A composite class representing a machine learning pipeline, for training and executing a series of steps.
@@ -18,10 +18,11 @@ class MlPipeline(TrainComponents):
         features (List[str]): Stores the list of features.
         target (str): Stores the target column name.
     """
-    def __init__(self, steps: Sequence[Tuple], features: List[str], target: str):
+    def __init__(self, steps: Sequence[Tuple], features: List[str], target: str, logger: Logger):
         self.steps = steps
         self.features = features
         self.target = target
+        self.logger = logger
 
     def _define_pipeline(self) -> Pipeline:
         """Defines the pipeline with the specified steps.
@@ -29,7 +30,9 @@ class MlPipeline(TrainComponents):
         Returns:
             Pipeline: An sklearn Pipeline object with the defined steps.
         """
-        return Pipeline(self.steps)
+        pipeline = Pipeline(self.steps)
+        self.logger.info(f"Pipeline defined: {pipeline}")
+        return pipeline
 
     def execute(self, data: Dict[str, pd.DataFrame]) -> Dict[str, Union[str, Callable]]:
         """Executes the pipeline on the training data and stores the fitted pipeline in the data dictionary.
@@ -46,5 +49,6 @@ class MlPipeline(TrainComponents):
             X=data["train_data"][self.features],
             y=data["train_data"][self.target]
         )
+        self.logger.info("Pipeline training completed")
         data["pipeline"] = pipeline
         return data
