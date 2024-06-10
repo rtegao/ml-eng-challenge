@@ -1,9 +1,9 @@
 from components import TrainComponents
 from sklearn.pipeline import Pipeline
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Union, Sequence
 import pandas as pd
 from config import settings
-
+from logging import Logger
 
 class Evaluate(TrainComponents):
     """A composite class representing a evaluation instance of a machine learning pipeline using specified metrics.
@@ -18,25 +18,47 @@ class Evaluate(TrainComponents):
     Attributes:
         metrics (Dict[str, Callable]): Dictionary containing metric names and corresponding metric functions.
     """
-    def __init__(self, metrics: Dict[str, Callable]):
+    def __init__(self, metrics: Dict[str, Callable], logger: Logger):
         self.metrics = metrics
+        self.logger = logger
 
-    def _calculate_metrics(self, pipeline: Pipeline, eval_data: pd.DataFrame) -> Dict[str, float]:
+    def _calculate_metrics(self, y_hat: Sequence[float], eval_data: pd.DataFrame) -> Dict[str, float]:
         """
-        Calculates the evaluation metrics for a given pipeline and data.
+        Calculates the evaluation metrics.
 
         Args:
-            pipeline (Pipeline): The scikit-learn pipeline to evaluate.
+            y_hat (Sequence[float]): Model predicitons over evaluation data.
             eval_data (pd.DataFrame): The evaluation data.
 
         Returns:
             Dict[str, float]: Dictionary of metric names and their calculated values.
         """
         result = {}
-        y_hat = pipeline.predict(eval_data[settings.TRAIN_FEATURES])
-        for metric_name, func in self.metrics.items():
-            result[metric_name] = func(y_hat, eval_data[settings.TARGET_FEATURE])
-        return result
+        try:
+            for metric_name, func in self.metrics.items():
+                result[metric_name] = func(y_hat, eval_data[settings.TARGET_FEATURE])
+                self.logger.info(f"Metric calculated: {metric_name}")
+            return result
+        except:
+            Exception("Error to calculate metrics")
+    
+    def _make_predictions(self, pipeline: Pipeline, eval_data: pd.DataFrame) -> Sequence[float]:
+        """
+        Make predictions using a pipeline object.
+
+        Parameters:
+            pipeline (Pipeline): A scikit-learn pipeline object trained for making predictions.
+            eval_data (pd.DataFrame): Input data for making predictions. 
+                It should be a pandas DataFrame containing the evaluation features.
+
+        Returns:
+            Sequence[float]: Predictions made by the pipeline for each data point in the input.
+            return pipeline.predict(eval_data[settings.TRAIN_FEATURES])
+        """
+        try:
+            return pipeline.predict(eval_data[settings.TRAIN_FEATURES])
+        except ValueError:
+            self.logger.error(f"Error performing evaluation predictions")
 
     def execute(self, data: Pipeline) -> Dict[str, Union[float, Callable[..., object]]]:
         """
@@ -48,5 +70,6 @@ class Evaluate(TrainComponents):
         Returns:
             Dict[str, Union[Dict[str, float], Pipeline]]: Dictionary containing the calculated metrics and the pipeline.
         """
-        metrics = self._calculate_metrics(pipeline=data["pipeline"], eval_data=data["test_data"])
+        y_hat = self._make_predictions(pipeline=data["pipeline"], eval_data=data["test_data"])
+        metrics = self._calculate_metrics(y_hat=y_hat, eval_data=data["test_data"])
         return {"metrics": metrics, "pipeline": data["pipeline"]}

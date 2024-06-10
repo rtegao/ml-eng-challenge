@@ -13,16 +13,21 @@ from dynaconf import settings
 
 from typing import Callable, Dict, Union
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 def main(
         eval_metrics: Dict[str, Callable],
         model_parameters: Dict[str, Union[str, float, int]],
         ml_pipeline: MlPipeline,
         experiment_name: str):
     #fetcher
-    fetcher = CsvFetcher()
+    fetcher = CsvFetcher(logger=logger)
     #evaluation
-    evaluate = Evaluate(metrics=eval_metrics)
-    writer = MlflowSklearnWriter(parameters=model_parameters, experiment_name=experiment_name)
+    evaluate = Evaluate(metrics=eval_metrics, logger=logger)
+    writer = MlflowSklearnWriter(parameters=model_parameters, experiment_name=experiment_name, logger=logger)
 
 
     #creating train pipeline
@@ -62,7 +67,8 @@ if __name__ == "__main__":
             ('TargetEncoder', preprocessor),
             ('GradientBoostingRegressor', model)],
         features=settings.TRAIN_FEATURES,
-        target=settings.TARGET_FEATURE
+        target=settings.TARGET_FEATURE,
+        logger=logger
     )
 
     #metrics
