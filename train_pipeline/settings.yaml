@@ -1,8 +1,8 @@
 default:
   MLFLOW_URI: "http://172.18.0.2:5000/"
   MLFLOW_EXPERIMENT_PATH: "/mlruns/"
-  TRAIN_DATA_PATH: traning_pipeline/YOUR_PATH_HERE
-  TEST_DATA_PATH: traning_pipeline/YOUR_PATH_HERE
+  TRAIN_DATA_PATH: tran_pipeline/YOU_PATH_HERE
+  TEST_DATA_PATH: tran_pipeline/YOU_PATH_HERE
   TRAIN_FEATURES: ['type','sector','net_usable_area','net_area','n_rooms','n_bathroom','latitude','longitude']
   TARGET_FEATURE: "price"
   CATEGORICAL_COLUMNS: ["type", "sector"]
