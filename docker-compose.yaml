@@ -1,8 +1,43 @@
 version: '3.7'
 
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+     driver: default
+     config:
+       - subnet: 172.18.0.0/16  # Define the subnet for the custom network
+
+
 services:
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.13.2
+    networks:
+      my_network:
+        ipv4_address: 172.18.0.2  # Specify the desired fixed IP address
     ports:
       - "5000:5000"
     entrypoint: mlflow server --host 0.0.0.0 --port 5000
+
+  pipeline:
+    networks:
+      - my_network
+    build:
+      context: ./train_pipeline/
+      dockerfile: Dockerfile
+    depends_on:
+      - mlflow
+    command: poetry run python -m property_model
+
+  fastapi:
+    networks:
+      - my_network
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pipeline
+    command: poetry run python -m app

@@ -1,4 +1,4 @@
-from train_pipeline.components import TrainComponents
+from components import TrainComponents
 from sklearn.pipeline import Pipeline
 from typing import List, Tuple, Sequence, Dict, Union, Callable
 import pandas as pd

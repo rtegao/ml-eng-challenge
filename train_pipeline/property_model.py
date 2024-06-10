@@ -1,10 +1,10 @@
 from sklearn.metrics import root_mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
 
-from train_pipeline.components.fetchers.csv_fetcher import CsvFetcher
-from train_pipeline.components.ml_pipeline.pipeline import MlPipeline
-from train_pipeline.components.ml_pipeline.evaluation import Evaluate
-from train_pipeline.components.trainers.sequential_trainer import SequentialTrainer
-from train_pipeline.components.writers.mlflow_writer import MlflowSklearnWriter
+from components.fetchers.csv_fetcher import CsvFetcher
+from components.ml_pipeline.pipeline import MlPipeline
+from components.ml_pipeline.evaluation import Evaluate
+from components.trainers.sequential_trainer import SequentialTrainer
+from components.writers.mlflow_writer import MlflowSklearnWriter
 
 from sklearn.ensemble import GradientBoostingRegressor
 from category_encoders import TargetEncoder
@@ -12,7 +12,6 @@ from sklearn.compose import ColumnTransformer
 from dynaconf import settings
 
 from typing import Callable, Dict, Union
-
 
 def main(
         eval_metrics: Dict[str, Callable],

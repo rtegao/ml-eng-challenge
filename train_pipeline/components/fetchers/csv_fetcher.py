@@ -1,4 +1,4 @@
-from train_pipeline.components import TrainComponents
+from components import TrainComponents
 import pandas as pd
 from typing import Dict
 
