@@ -64,7 +64,9 @@ curl  -X POST \
 That is a bottleneck in this solution, as the MlFlow is running in a container totally separated from the train_pipeline and from the fastapi. A network bridge was created to connect all the containers, and a hardcoded IP address was used to create the MlFlow container.
 
 If any problem happens with the containers' communication, just run the following command:
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <mlflow-container-id>
+
+` docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <mlflow-container-id>` 
+
 Get the IP address and replace it in the docker-compose.yaml and in the settings.yaml.
 
 # Assumptions
