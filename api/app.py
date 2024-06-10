@@ -2,7 +2,6 @@ import uvicorn
 from fastapi import FastAPI
 from src.routes import router
 from fastapi.openapi.utils import get_openapi
-from swagger import custom_openapi
 from config import settings
 
 app = FastAPI()

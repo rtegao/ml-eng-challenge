@@ -1308,7 +1308,7 @@ test = ["pytest (>=6,<8.1.0 || >=8.2.0)", "pytest-checkdocs (>=2.4)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "6bd7e6f8ade6e94e8927bf5183b4fb5b610dda209b265f6a3fca20675d587133"
+content-hash = "953b662168419ad087f6bba77db8c41c33fa42779e23697e0d7f951d8b00eb93"
 
 [metadata.files]
 alembic = [

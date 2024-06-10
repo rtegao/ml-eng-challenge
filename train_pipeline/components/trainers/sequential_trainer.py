@@ -1,4 +1,4 @@
-from train_pipeline.components import TrainComponents
+from components import TrainComponents
 from typing import Any
 
 

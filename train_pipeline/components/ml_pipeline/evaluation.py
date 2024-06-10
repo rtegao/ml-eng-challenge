@@ -1,8 +1,8 @@
-from train_pipeline.components import TrainComponents
+from components import TrainComponents
 from sklearn.pipeline import Pipeline
 from typing import Callable, Dict, Union
 import pandas as pd
-from train_pipeline.config import settings
+from config import settings
 
 
 class Evaluate(TrainComponents):
