@@ -79,3 +79,6 @@ No grid search technique was used. It is assumed that the provided parameters ar
 - Some code in the entry point of the `train_pipeline` could be injected by an orchestration tool, such as the model parameters.
 - With the model parameters provided via an orchestration tool, a grid search could be performed to find the most suitable model using new training and test data.
 - Stop usind hardcoded IP for the MlFlow container, setup a DNS. 
+- The API currently reads the most recent model for each experiment. This logic could be improved to run the most suitable model (the one with the best metrics) for each training set.
+- The train pipeline logs the model and metrics. Currently, there is an acceptance criterion based on the metrics values, which could be enhanced.
+- The API has an initial delay of 120 seconds to initiate (see the docker-compose) to wait for the model to train. This logic could be improved to include a few retries to fetch an available model.

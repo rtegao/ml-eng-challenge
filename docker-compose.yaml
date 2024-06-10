@@ -40,4 +40,4 @@ services:
       - "8000:8000"
     depends_on:
       - pipeline
-    command: poetry run python -m app
+    command: /bin/sh -c "sleep 120 && poetry run python -m app"
